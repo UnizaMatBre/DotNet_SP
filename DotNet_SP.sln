@@ -5,6 +5,8 @@ VisualStudioVersion = 17.10.34916.146
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LispSharpCore", "LispSharpCore\LispSharpCore.csproj", "{4150B4C5-AD9C-4691-8293-A2ED96C28996}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LispSharpCli", "LispSharpCli\LispSharpCli.csproj", "{D7FABBF6-AC62-4780-9CE1-8A4265F51B8F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{4150B4C5-AD9C-4691-8293-A2ED96C28996}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4150B4C5-AD9C-4691-8293-A2ED96C28996}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4150B4C5-AD9C-4691-8293-A2ED96C28996}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7FABBF6-AC62-4780-9CE1-8A4265F51B8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7FABBF6-AC62-4780-9CE1-8A4265F51B8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7FABBF6-AC62-4780-9CE1-8A4265F51B8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7FABBF6-AC62-4780-9CE1-8A4265F51B8F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
