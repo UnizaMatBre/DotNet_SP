@@ -34,7 +34,7 @@ namespace LispSharpCore.Types {
 
 
         //* copies all variables into specified context
-        private void CopyInto(Context targetContext) {
+        private void _CopyInto(Context targetContext) {
             foreach (var local in this._locals) {
                 // we will not copy into already existing local - it is clear that dev shadowed
                 if (targetContext._locals.ContainsKey(local.Key)) {
@@ -47,7 +47,7 @@ namespace LispSharpCore.Types {
         }
 
         //* checks if outer context is even valid
-        private void CheckOuterValidity() { 
+        private void _CheckOuterValidity() { 
             // no outer? no reason to check
             if (this._outerContext == null) {
                 return;
@@ -55,7 +55,7 @@ namespace LispSharpCore.Types {
 
             // is outer valid?
             if (this._outerContext._valid == false) { 
-                this._outerContext.CopyInto(this);
+                this._outerContext._CopyInto(this);
 
                 this._outerContext = null;
             }
@@ -71,7 +71,7 @@ namespace LispSharpCore.Types {
          * \returns False: when local is not found
          */
         public bool TryGetValue(Symbol name, out object? value) {
-            this.CheckOuterValidity();
+            this._CheckOuterValidity();
 
             // if this context has this local, get it
             if (this._locals.TryGetValue(name, out value)) {
@@ -96,7 +96,7 @@ namespace LispSharpCore.Types {
          * \returns False: when local is not found
          */
         public bool TryPutValue(Symbol name, object? value) {
-            this.CheckOuterValidity();
+            this._CheckOuterValidity();
 
             // if this context has local, put value in it
             if (this._locals.ContainsKey(name)) {
