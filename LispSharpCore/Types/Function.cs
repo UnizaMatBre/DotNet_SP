@@ -61,6 +61,16 @@ namespace LispSharpCore.Types {
             }
         }
 
+
+        /**
+         * Makes this context invalid, which will make inner context take all locals
+         * 
+         * Use when function this context belongs to is ending
+         */
+        public void Invalidate() {
+            this._valid = false;
+        }
+
         /**
          * Gets the value associated with specified name
          * 
