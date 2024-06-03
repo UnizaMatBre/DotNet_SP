@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,7 +31,20 @@ namespace LispSharpCore.Types {
                 this._locals.Add(name, null);
             });
         }
-        
+
+
+        //* copies all variables into specified context
+        private void CopyInto(Context targetContext) {
+            foreach (var local in this._locals) {
+                // we will not copy into already existing local - it is clear that dev shadowed
+                if (targetContext._locals.ContainsKey(local.Key)) {
+                    return;
+                }
+
+                // add value
+                targetContext._locals[local.Key] = local.Value;
+            }
+        }
 
         /**
          * Gets the value associated with specified name
