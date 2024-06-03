@@ -46,6 +46,21 @@ namespace LispSharpCore.Types {
             }
         }
 
+        //* checks if outer context is even valid
+        private void CheckOuterValidity() { 
+            // no outer? no reason to check
+            if (this._outerContext == null) {
+                return;
+            }
+
+            // is outer valid?
+            if (this._outerContext._valid == false) { 
+                this._outerContext.CopyInto(this);
+
+                this._outerContext = null;
+            }
+        }
+
         /**
          * Gets the value associated with specified name
          * 
@@ -56,6 +71,8 @@ namespace LispSharpCore.Types {
          * \returns False: when local is not found
          */
         public bool TryGetValue(Symbol name, out object? value) {
+            this.CheckOuterValidity();
+
             // if this context has this local, get it
             if (this._locals.TryGetValue(name, out value)) {
                 return true;
@@ -79,6 +96,8 @@ namespace LispSharpCore.Types {
          * \returns False: when local is not found
          */
         public bool TryPutValue(Symbol name, object? value) {
+            this.CheckOuterValidity();
+
             // if this context has local, put value in it
             if (this._locals.ContainsKey(name)) {
                 this._locals[name] = value;
