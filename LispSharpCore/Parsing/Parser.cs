@@ -117,7 +117,13 @@ namespace LispSharpCore.Parsing {
 
         public Object? Parse(string sourceCode) {
             // extremly basic tokenization
-            this._tokens = sourceCode.Replace("(", " ( ").Replace(")", " ) ").Split(" ").ToList();
+            this._tokens = sourceCode
+                .Replace("(", " ( ")
+                .Replace(")", " ) ")
+                .Split(" ")
+                .Where(item => item != string.Empty)
+                .ToList();
+
             this._index = 0;
 
 

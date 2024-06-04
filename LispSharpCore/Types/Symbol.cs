@@ -14,6 +14,7 @@ namespace LispSharpCore.Types {
         public Symbol(String text) {
             if (KeywordPattern.IsMatch(text)) {
                 this.Text = text;
+                return;
             }
 
             throw new ArgumentException("Invalid symbol text");
