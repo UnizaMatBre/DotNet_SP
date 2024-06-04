@@ -56,8 +56,6 @@ namespace LispSharpCore.Parsing {
 
                 // we found closing parenthesis, we are finished
                 if (token == ")") { 
-                    this._MoveBy(1);
-
                     return list;
                 }
 
