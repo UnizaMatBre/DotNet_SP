@@ -8,6 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace LispSharpCore.Parsing {
+
+    /**
+     * Class representing parsing machinery
+     * 
+     * Uses top-down approach to turn sequence of tokens into tree of objects
+     */
     public class Parser {
         static readonly List<string> EmptyList = new List<string>();
 
@@ -46,6 +52,13 @@ namespace LispSharpCore.Parsing {
             return this._index >= this._tokens.Count;
         }
 
+        /**
+         * Parses tokens into sequence of objects
+         * 
+         * \return list object containing enclosed element
+         * 
+         * \exception Exception : closing bracket is missing
+         */
         public List<Object?> _ParseList() {
             var list = new List<Object?>();
 
@@ -69,6 +82,14 @@ namespace LispSharpCore.Parsing {
             throw new Exception("Missing enclosing bracket ')' ");
         }
 
+        /**
+         * Parses token containing string into object form
+         * NOTE: Add handling for escape sequences
+         * 
+         * \return string literal in object form
+         * 
+         * \exception Exception : closing quotation mark is missing
+         */
         public String _ParseString() {
             var token = this._GetCurrent();
 
@@ -79,8 +100,14 @@ namespace LispSharpCore.Parsing {
             return token.Substring(1, token.Length - 2);
         }
 
-
-        public object? _ParseElement() {
+        /**
+         * Parses singular token into its object form using specified rules
+         * 
+         * \return object representation of token
+         * 
+         * \exception Exception : unexpected token that doesn't fit any rule was found out
+         */
+        public object _ParseElement() {
             var token = this._GetCurrent();
 
             // parsing lists
@@ -112,7 +139,16 @@ namespace LispSharpCore.Parsing {
             throw new Exception(String.Format("Unexpected token: {0}", token));
         }
 
-
+        /**
+         * Transforms source code to executable AST
+         * 
+         * \param sourceCode : source code in string form
+         * 
+         * \returns object : sourceCode has at least one valid term
+         * \returns null : sourceCode is empty
+         * 
+         * \exception Exception : syntax error was discovered in source code
+         */
         public Object? Parse(string sourceCode) {
             // extremly basic tokenization
             this._tokens = sourceCode
@@ -124,6 +160,7 @@ namespace LispSharpCore.Parsing {
 
             this._index = 0;
 
+            // input is empty? Then return empty too
             if (this._tokens.Count == 0) {
                 return null;
             }
