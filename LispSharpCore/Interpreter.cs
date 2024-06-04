@@ -25,7 +25,7 @@ namespace LispSharpCore {
         /**
          * Construct frame using function and potentionaly provided previous frame
          */
-        Frame(Function function, Frame? previous) {
+        public Frame(Function function, Frame? previous) {
             this._function = function;
             this._previous = previous;
 
