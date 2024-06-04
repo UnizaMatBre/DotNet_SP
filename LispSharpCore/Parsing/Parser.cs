@@ -67,8 +67,19 @@ namespace LispSharpCore.Parsing {
                 this._MoveBy(1);
             }
 
-            throw new Exception("Missing closing bracket");
+            throw new Exception("Missing enclosing bracket ')' ");
         }
+
+        public String _ParseString() {
+            var token = this._GetCurrent();
+
+            if (token.Last() != '"') {
+                throw new Exception("Missing enclosing quotation mark '\"' ");
+            }
+
+            return token.Substring(1, token.Length - 2);
+        }
+
 
         public object? _ParseElement() {
             var token = this._GetCurrent();
@@ -90,7 +101,7 @@ namespace LispSharpCore.Parsing {
 
             // parsing strings
             if (token[0] == '"') {
-                return null;
+                return this._ParseString();
             }
 
             // parsing symbols
@@ -98,7 +109,7 @@ namespace LispSharpCore.Parsing {
                 return new Symbol(token);
             }
 
-
+            // unknow token, throw exception
             throw new Exception(String.Format("Unexpected token: {0}", token));
         }
 
