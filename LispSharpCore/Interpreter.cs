@@ -40,5 +40,10 @@ namespace LispSharpCore {
     /**
      * Class representing running execution of specific method
      */
-    public class Interpreter { }
+    public class Interpreter {
+        
+
+        public Interpreter(Function function) { }
+    
+    }
 }
