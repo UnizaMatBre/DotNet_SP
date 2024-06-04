@@ -44,7 +44,33 @@ namespace LispSharpCore.Parsing {
             return this._index >= this._tokens.Count;
         }
 
+        public object? _ParseElement() {
+            var token = this._GetCurrent();
 
+            // parsing lists
+            if (token[0] == '(') {
+                return null;
+            }
+
+            // parsing integers
+            if (int.TryParse(token, out int integerNumber)) {
+                return integerNumber;
+            }
+
+            // parsing floats
+            if (float.TryParse(token, out float decimalNumber)) { 
+                return decimalNumber;
+            }
+
+            // parsing strings
+            if (token[0] == '"') {
+                return null;
+            }
+
+            // parsing symbols
+
+            throw new Exception(String.Format("Unexpected token: {0}", token));
+        }
 
 
         public List<object?> Parse(string sourceCode) {
