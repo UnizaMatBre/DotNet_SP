@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LispSharpCore.Types;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
@@ -68,6 +69,10 @@ namespace LispSharpCore.Parsing {
             }
 
             // parsing symbols
+            if (Symbol.KeywordPattern.IsMatch(token)) {
+                return new Symbol(token);
+            }
+
 
             throw new Exception(String.Format("Unexpected token: {0}", token));
         }

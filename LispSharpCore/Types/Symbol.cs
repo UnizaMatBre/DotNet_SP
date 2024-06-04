@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LispSharpCore.Types {
     public class Symbol {
-        private static Regex KeywordPattern = new Regex(@"([A-Za-z0-9_])+$");
+        public static Regex KeywordPattern = new Regex(@"([A-Za-z0-9_])+$");
 
         public String Text { get; init; }
 
