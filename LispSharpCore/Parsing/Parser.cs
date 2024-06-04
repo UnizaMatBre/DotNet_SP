@@ -114,14 +114,14 @@ namespace LispSharpCore.Parsing {
         }
 
 
-        public List<object?> Parse(string sourceCode) {
+        public Object? Parse(string sourceCode) {
             // extremly basic tokenization
             this._tokens = sourceCode.Replace("(", " ( ").Replace(")", " ) ").Split(" ").ToList();
             this._index = 0;
 
 
 
-            return new List<object?>();
+            return this._ParseElement();
         }
     
     }
