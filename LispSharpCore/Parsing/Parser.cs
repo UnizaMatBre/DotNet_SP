@@ -124,7 +124,9 @@ namespace LispSharpCore.Parsing {
 
             this._index = 0;
 
-
+            if (this._tokens.Count == 0) {
+                return null;
+            }
 
             return this._ParseElement();
         }
