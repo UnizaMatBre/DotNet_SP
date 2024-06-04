@@ -45,12 +45,37 @@ namespace LispSharpCore.Parsing {
             return this._index >= this._tokens.Count;
         }
 
+        public List<Object?> _ParseList() {
+            var list = new List<Object?>();
+
+            this._MoveBy(1);
+
+            while (!this._IsFinished()) {
+                var token = this._GetCurrent();
+
+                // we found closing parenthesis, we are finished
+                if (token == ")") { 
+                    this._MoveBy(1);
+
+                    return list;
+                }
+
+                // parse element and put it into list
+                list.Add(this._ParseElement());
+
+                // move to next element
+                this._MoveBy(1);
+            }
+
+            throw new Exception("Missing closing bracket");
+        }
+
         public object? _ParseElement() {
             var token = this._GetCurrent();
 
             // parsing lists
-            if (token[0] == '(') {
-                return null;
+            if (token == "(") {
+                return this._ParseList();
             }
 
             // parsing integers
