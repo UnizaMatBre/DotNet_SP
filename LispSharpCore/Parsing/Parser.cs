@@ -1,6 +1,7 @@
 ﻿using LispSharpCore.Types;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
@@ -95,7 +96,7 @@ namespace LispSharpCore.Parsing {
             }
 
             // parsing floats
-            if (float.TryParse(token, out float decimalNumber)) { 
+            if (float.TryParse(token, NumberStyles.Float, CultureInfo.InvariantCulture, out float decimalNumber)) { 
                 return decimalNumber;
             }
 
