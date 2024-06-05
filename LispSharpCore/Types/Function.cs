@@ -10,11 +10,7 @@ namespace LispSharpCore.Types {
 
 
 
-    public class Context {
-
-        //* is this context valid (its function is not finished)?
-        private bool _valid = true;
-        
+    public class Context {    
         //* the outer context whose variables will be 
         private Context? _outerContext;
         
@@ -46,30 +42,7 @@ namespace LispSharpCore.Types {
             }
         }
 
-        //* checks if outer context is even valid
-        private void _CheckOuterValidity() { 
-            // no outer? no reason to check
-            if (this._outerContext == null) {
-                return;
-            }
 
-            // is outer valid?
-            if (this._outerContext._valid == false) { 
-                this._outerContext._CopyInto(this);
-
-                this._outerContext = null;
-            }
-        }
-
-
-        /**
-         * Makes this context invalid, which will make inner context take all locals
-         * 
-         * Use when function this context belongs to is ending
-         */
-        public void Invalidate() {
-            this._valid = false;
-        }
 
         /**
          * Gets the value associated with specified name
@@ -81,8 +54,6 @@ namespace LispSharpCore.Types {
          * \returns False: when local is not found
          */
         public bool TryGetValue(Symbol name, out object? value) {
-            this._CheckOuterValidity();
-
             // if this context has this local, get it
             if (this._locals.TryGetValue(name, out value)) {
                 return true;
@@ -106,8 +77,6 @@ namespace LispSharpCore.Types {
          * \returns False: when local is not found
          */
         public bool TryPutValue(Symbol name, object? value) {
-            this._CheckOuterValidity();
-
             // if this context has local, put value in it
             if (this._locals.ContainsKey(name)) {
                 this._locals[name] = value;
