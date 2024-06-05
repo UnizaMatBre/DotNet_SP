@@ -101,37 +101,6 @@ namespace LispSharpCore.Types {
      * Class representing callable function
      */
     public class Function {
-        //* list of locals that are also parameters
-        public List<Symbol> Parameters { get; init; }
-
-        //* list of terms making up function's code
-        public List<object?> Code { get; init; }
-
-        //* local context, holding all local values
-        public Context LocalContext { get; init; }
-
-        //* number of parameters this function needs
-        public int Arity { get => this.Parameters.Count; }
-
-
-
-        /**
-         * Constructs functions from provided parameters
-         *
-         * \param parameters : parameters of function
-         * \param variables : local variables of function - symbols from "parameters" are allowed
-         * \param code : source code of function
-         * \param outerContext : context of outer function - used to create closure
-         */
-        public Function(List<Symbol> parameters, List<Symbol> variables, List<object?> code, Context? outerContext) {
-            this.Parameters = parameters;
-            this.Code = code;
-
-            // combine variables and parameters without duplicits to get true locals
-            var localNames = variables.Union(parameters).ToList();
-
-            this.LocalContext = new Context(localNames, outerContext );
-        }
-    
+      
     }
 }
