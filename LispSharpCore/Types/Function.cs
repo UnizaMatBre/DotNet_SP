@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -46,7 +47,9 @@ namespace LispSharpCore.Types {
             }
         }
 
-
+        public void Add(Symbol name, object? value) {
+            this._locals.Add(name, value);
+        }
 
         /**
          * Gets the value associated with specified name
@@ -134,6 +137,17 @@ namespace LispSharpCore.Types {
             this.Variables      = variableNames.Union(parameterNames).ToList();
             this.Code           = code;
             this.OuterContext   = context;
+        }
+
+
+        public Context Apply(IList<object?> arguments) {
+            var applyContext = new Context(this.Variables, this.OuterContext);
+
+            foreach (var local in Parameters.Zip(arguments)) {
+                applyContext.Add(local.First, local.Second);
+            }
+
+            return applyContext;
         }
 
     }
