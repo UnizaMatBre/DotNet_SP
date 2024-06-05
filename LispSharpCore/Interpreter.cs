@@ -12,11 +12,16 @@ namespace LispSharpCore {
         private Context _rootContext;
 
         public Interpreter(Context rootContext) {
-            this._rootContext = rootContext;    
+            this._rootContext = rootContext;
         }
 
-        public object? start(object? code) {
+        private object? _EvaluateExpression(object? expression, Context context) {
             return null;
+        }
+
+
+        public object? start(object? expression) {
+            return this._EvaluateExpression(expression, this._rootContext);
         }
 
     }
