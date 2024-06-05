@@ -15,7 +15,9 @@ namespace LispSharpCore {
             this._rootContext = rootContext;    
         }
 
-
+        public object? start(object? code) {
+            return null;
+        }
 
     }
 }
