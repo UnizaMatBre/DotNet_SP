@@ -36,11 +36,26 @@ namespace LispSharpCore {
             );
         }
 
+        /**
+         * Evaluates list to function result
+         * 
+         * \param list : collection containing function name and parameters
+         * \param context : currently active context of evaluation
+         * 
+         * \return result of successful function call
+         */
+        private object? EvaluateCall(List<object?> list, Context context) {
+            return null;
+        }
+
         private object? EvaluateExpression(object? expression, Context context) {
             return expression switch {
 
                 // evaluate symbols (to local value)
                 Types.Symbol name => this.EvaluateSymbol(name, context),
+
+                // evaluates lists (calls)
+                IList<object?> list => null,
 
                 // evaluate null (just in case discard rule will not handle it)
                 null => null,
