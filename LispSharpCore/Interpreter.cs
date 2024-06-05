@@ -15,8 +15,32 @@ namespace LispSharpCore {
             this._rootContext = rootContext;
         }
 
+
+        /**
+         * Evaluates symbol to variable value of specified name
+         * 
+         * \param name : name of variable we want to fetch from context
+         * \param context : currently active context of evaluation
+         * 
+         * \return value from variable we found
+         * 
+         * \exception Exception : variable with specified name was not found
+         */
+        private object? EvaluateSymbol(Symbol name, Context context) {
+            if (context.TryGetValue(name, out object? result)) {
+                return result;
+            }
+
+            throw new Exception(
+                String.Format("Variable #{0} doesn't exist", name.Text)
+            );
+        }
+
         private object? EvaluateExpression(object? expression, Context context) {
             return expression switch {
+
+                // evaluate symbols (to local value)
+                Types.Symbol name => this.EvaluateSymbol(name, context),
 
                 // evaluate self-evaluating terms
                 _ => expression,
