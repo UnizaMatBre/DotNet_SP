@@ -9,7 +9,11 @@ using System.Threading.Tasks;
 namespace LispSharpCore.Types {
 
 
-
+    /**
+     * Class representing context of execution
+     * 
+     * It contains all variables that are defined in current scope + access to closure 
+     */
     public class Context {    
         //* the outer context whose variables will be 
         private Context? _outerContext;
