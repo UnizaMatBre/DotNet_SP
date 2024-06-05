@@ -107,12 +107,27 @@ namespace LispSharpCore.Parsing {
          * 
          * \exception Exception : unexpected token that doesn't fit any rule was found out
          */
-        public object _ParseElement() {
+        public object? _ParseElement() {
             var token = this._GetCurrent();
 
             // parsing lists
             if (token == "(") {
                 return this._ParseList();
+            }
+
+            // parsing true
+            if (token == "true") {
+                return true;
+            }
+
+            // parsing false
+            if (token == "false") {
+                return false;
+            }
+
+            // parsing null 
+            if (token == "null") {
+                return null;
             }
 
             // parsing integers
