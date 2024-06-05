@@ -23,14 +23,14 @@ namespace LispSharpCore.Types {
         private Dictionary<Symbol, object?> _locals = new Dictionary<Symbol, object?>();
 
 
-        public Context(List<Symbol> localNames, Context? outerContext = null) {
+        public Context(IList<Symbol> localNames, Context? outerContext = null) {
             // set outer context
             this._outerContext = outerContext;
 
             // turn all names into local variables
-            localNames.ForEach(name => {
-                this._locals.Add(name, null);
-            });
+            foreach (var name in localNames) {
+                this._locals[name] = null;
+            }
         }
 
 
