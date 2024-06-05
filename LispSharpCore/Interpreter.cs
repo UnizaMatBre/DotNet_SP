@@ -16,7 +16,11 @@ namespace LispSharpCore {
         }
 
         private object? EvaluateExpression(object? expression, Context context) {
-            return null;
+            return expression switch {
+
+                // evaluate self-evaluating terms
+                _ => expression,
+            };
         }
 
 
