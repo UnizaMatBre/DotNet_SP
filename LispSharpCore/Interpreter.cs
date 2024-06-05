@@ -42,6 +42,9 @@ namespace LispSharpCore {
                 // evaluate symbols (to local value)
                 Types.Symbol name => this.EvaluateSymbol(name, context),
 
+                // evaluate null (just in case discard rule will not handle it)
+                null => null,
+
                 // evaluate self-evaluating terms
                 _ => expression,
             };
