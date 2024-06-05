@@ -97,7 +97,7 @@ namespace LispSharpCore {
 
                         var storedVal = this.EvaluateExpression(args[1], context);
 
-                        if (!context.TryPutValue(varName, storedVal) {
+                        if (!context.TryPutValue(varName, storedVal)) {
                             throw new Exception(String.Format("Special form #set: variable nammed #{0} was not found", varName.Text));
                         }
 
@@ -134,7 +134,17 @@ namespace LispSharpCore {
 
             }
 
-            return null;
+            var evalHead = this.EvaluateExpression(head, context);
+
+            if (evalHead is not Types.Function headFunction) {
+                throw new Exception("Call head is not a function");
+            }
+
+            var evaluatedArgs = args.Select(argument => this.EvaluateExpression(argument, context)).ToList();
+
+            var appliedContext = headFunction.Apply(evaluatedArgs);
+
+            return this.EvaluateExpression(headFunction.Code, appliedContext);
         }
 
         private object? EvaluateExpression(object? expression, Context context) {
