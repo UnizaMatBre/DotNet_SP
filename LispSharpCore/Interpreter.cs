@@ -106,10 +106,24 @@ namespace LispSharpCore {
 
                     // creates new function and returns it
                     case "function":
+                        
+                        
                         if (args.Count() != 3) {
-                            throw new Exception("Special form #if wrong argument count");
+                            throw new Exception("Special form #function: wrong argument count");
                         }
-                        throw new NotImplementedException();
+
+                        if (args[0] is not IList<Object?> paramList) {
+                            throw new Exception("Special form #function: parameter list is not a list");
+                        }
+
+                        if (args[1] is not IList<Object?> variableList) {
+                            throw new Exception("Special form #function: variable list is not a list");
+                        }
+
+                        IList<Types.Symbol> castedParamList = paramList.Cast<Types.Symbol>().ToList();
+                        IList<Types.Symbol> castedVariableList = variableList.Cast<Types.Symbol>().ToList(); 
+
+                        return new Types.Function(castedParamList, castedVariableList, args[3], context);
                         
 
                     default:
