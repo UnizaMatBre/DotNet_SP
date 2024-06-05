@@ -29,7 +29,7 @@ namespace LispSharpCore.Parsing {
          *
          * \return token on current position
          */
-        private string _GetCurrent() {
+        private string GetCurrent() {
             return this._tokens[this._index];
         }
 
@@ -38,7 +38,7 @@ namespace LispSharpCore.Parsing {
          * 
          * \param distance : number of element by which parser will move
          */
-        private void _MoveBy(int distance) {
+        private void MoveBy(int distance) {
             this._index += distance;
         }
 
@@ -48,7 +48,7 @@ namespace LispSharpCore.Parsing {
          * \returns True : all tokens are consumed
          * \returns False : there are still tokens to consume
          */
-        private bool _IsFinished() { 
+        private bool IsFinished() { 
             return this._index >= this._tokens.Count;
         }
 
@@ -59,13 +59,13 @@ namespace LispSharpCore.Parsing {
          * 
          * \exception Exception : closing bracket is missing
          */
-        public List<Object?> _ParseList() {
+        public List<Object?> ParseList() {
             var list = new List<Object?>();
 
-            this._MoveBy(1);
+            this.MoveBy(1);
 
-            while (!this._IsFinished()) {
-                var token = this._GetCurrent();
+            while (!this.IsFinished()) {
+                var token = this.GetCurrent();
 
                 // we found closing parenthesis, we are finished
                 if (token == ")") { 
@@ -76,7 +76,7 @@ namespace LispSharpCore.Parsing {
                 list.Add(this._ParseElement());
 
                 // move to next element
-                this._MoveBy(1);
+                this.MoveBy(1);
             }
 
             throw new Exception("Missing enclosing bracket ')' ");
@@ -90,8 +90,8 @@ namespace LispSharpCore.Parsing {
          * 
          * \exception Exception : closing quotation mark is missing
          */
-        public String _ParseString() {
-            var token = this._GetCurrent();
+        public String ParseString() {
+            var token = this.GetCurrent();
 
             if (token.Last() != '"') {
                 throw new Exception("Missing enclosing quotation mark '\"' ");
@@ -108,11 +108,11 @@ namespace LispSharpCore.Parsing {
          * \exception Exception : unexpected token that doesn't fit any rule was found out
          */
         public object? _ParseElement() {
-            var token = this._GetCurrent();
+            var token = this.GetCurrent();
 
             // parsing lists
             if (token == "(") {
-                return this._ParseList();
+                return this.ParseList();
             }
 
             // parsing true
@@ -142,7 +142,7 @@ namespace LispSharpCore.Parsing {
 
             // parsing strings
             if (token[0] == '"') {
-                return this._ParseString();
+                return this.ParseString();
             }
 
             // parsing symbols
