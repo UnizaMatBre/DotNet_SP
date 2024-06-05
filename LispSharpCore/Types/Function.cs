@@ -112,7 +112,7 @@ namespace LispSharpCore.Types {
         public IList<Types.Symbol> Variables { get; init; }
 
         // code of function
-        public IList<Object?> Code { get; init; }
+        public Object? Code { get; init; }
 
         // outer context where function was created 
         public Context? OuterContext { get; init; }
@@ -128,7 +128,7 @@ namespace LispSharpCore.Types {
          * \param code : source code of function
          * \param outerContext : context of outer function - used to create closure
          */
-        public Function(IList<Types.Symbol> parameterNames, IList<Types.Symbol> variableNames, IList<Object?> code, Context context) {
+        public Function(IList<Types.Symbol> parameterNames, IList<Types.Symbol> variableNames, Object? code, Context context) {
             if (parameterNames.Count() != parameterNames.Distinct().Count()) {
                 throw new Exception("Duplications in parameter list");
             }
