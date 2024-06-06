@@ -40,6 +40,9 @@ namespace LispSharpCore.Types {
 
         public override int GetHashCode() => 
             this.Text.GetHashCode();
-        
+
+        public override string ToString() =>
+            String.Format("#{0}", this.Text);
+
     }
 }
