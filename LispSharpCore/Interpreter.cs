@@ -45,7 +45,7 @@ namespace LispSharpCore {
          * 
          * \return result of successful function call
          */
-        private object? EvaluateCall(List<object?> list, Context context) {
+        private object? EvaluateCall(IList<object?> list, Context context) {
             // return empty list as is it
             if (!list.Any()) {
                 return list;
@@ -123,7 +123,7 @@ namespace LispSharpCore {
                         IList<Types.Symbol> castedParamList = paramList.Cast<Types.Symbol>().ToList();
                         IList<Types.Symbol> castedVariableList = variableList.Cast<Types.Symbol>().ToList(); 
 
-                        return new Types.Function(castedParamList, castedVariableList, args[3], context);
+                        return new Types.Function(castedParamList, castedVariableList, args[2], context);
                         
 
                     default:
@@ -154,7 +154,7 @@ namespace LispSharpCore {
                 Types.Symbol name => this.EvaluateSymbol(name, context),
 
                 // evaluates lists (calls)
-                IList<object?> list => null,
+                IList<object?> list => this.EvaluateCall(list, context),
 
                 // evaluate null (just in case discard rule will not handle it)
                 null => null,
@@ -171,3 +171,4 @@ namespace LispSharpCore {
 
     }
 }
+
