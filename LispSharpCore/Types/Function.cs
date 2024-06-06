@@ -22,6 +22,9 @@ namespace LispSharpCore.Types {
         //* dictionary of function's local values
         private Dictionary<Symbol, object?> _locals = new Dictionary<Symbol, object?>();
 
+        public Context(Context? outerContext = null) {
+            this._outerContext = outerContext;
+        }
 
         public Context(IList<Symbol> localNames, Context? outerContext = null) {
             // set outer context
