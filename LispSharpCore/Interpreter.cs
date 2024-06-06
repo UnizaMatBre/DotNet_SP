@@ -25,14 +25,14 @@ namespace LispSharpCore {
          * 
          * \return value from variable we found
          * 
-         * \exception Exception : variable with specified name was not found
+         * \exception RuntimeException : variable with specified name was not found
          */
         private object? EvaluateSymbol(Symbol name, Context context) {
             if (context.TryGetValue(name, out object? result)) {
                 return result;
             }
 
-            throw new Exception(
+            throw new Exceptions.RuntimeException(
                 String.Format("Variable #{0} doesn't exist", name.Text)
             );
         }
@@ -61,7 +61,7 @@ namespace LispSharpCore {
                     // returns argument as it is, without evaluating it
                     case "quote":
                         if (args.Count() != 1) {
-                            throw new Exception("Special form #quote: wrong argument count");
+                            throw new Exceptions.RuntimeException("Special form #quote: wrong argument count");
                         }
                         return args.First();
 
@@ -70,7 +70,7 @@ namespace LispSharpCore {
                     // evaluates condition and then evaluates true or false branch
                     case "if":
                         if (args.Count() != 3) {
-                            throw new Exception("Special form #if: wrong argument count");
+                            throw new Exceptions.RuntimeException("Special form #if: wrong argument count");
                         }
 
                         var condition = this.EvaluateExpression(args[0], context);
@@ -81,24 +81,24 @@ namespace LispSharpCore {
                             return this.EvaluateExpression(correctBranch, context);
                         }
                         else { 
-                           throw new Exception("Special form #if: condition is not boolean");
+                           throw new Exceptions.RuntimeException("Special form #if: condition is not boolean");
                         }
 
                         
                     // stores value into specified variable
                     case "set":
                         if (args.Count() != 2) {
-                            throw new Exception("Special form #set: wrong argument count");
+                            throw new Exceptions.RuntimeException("Special form #set: wrong argument count");
                         }
 
                         if (args[0] is not Types.Symbol varName) {
-                            throw new Exception("Special form #set: variable name must be a symbol");
+                            throw new Exceptions.RuntimeException("Special form #set: variable name must be a symbol");
                         }
 
                         var storedVal = this.EvaluateExpression(args[1], context);
 
                         if (!context.TryPutValue(varName, storedVal)) {
-                            throw new Exception(String.Format("Special form #set: variable nammed #{0} was not found", varName.Text));
+                            throw new Exceptions.RuntimeException(String.Format("Special form #set: variable nammed #{0} was not found", varName.Text));
                         }
 
                         return storedVal;
@@ -109,15 +109,15 @@ namespace LispSharpCore {
                         
                         
                         if (args.Count() != 3) {
-                            throw new Exception("Special form #function: wrong argument count");
+                            throw new Exceptions.RuntimeException("Special form #function: wrong argument count");
                         }
 
                         if (args[0] is not IList<Object?> paramList) {
-                            throw new Exception("Special form #function: parameter list is not a list");
+                            throw new Exceptions.RuntimeException("Special form #function: parameter list is not a list");
                         }
 
                         if (args[1] is not IList<Object?> variableList) {
-                            throw new Exception("Special form #function: variable list is not a list");
+                            throw new Exceptions.RuntimeException("Special form #function: variable list is not a list");
                         }
 
                         IList<Types.Symbol> castedParamList = paramList.Cast<Types.Symbol>().ToList();
@@ -137,7 +137,7 @@ namespace LispSharpCore {
             var evalHead = this.EvaluateExpression(head, context);
 
             if (evalHead is not Types.Function headFunction) {
-                throw new Exception("Call head is not a function");
+                throw new Exceptions.RuntimeException("Call head is not a function");
             }
 
             var evaluatedArgs = args.Select(argument => this.EvaluateExpression(argument, context)).ToList();

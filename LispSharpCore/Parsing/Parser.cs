@@ -57,7 +57,7 @@ namespace LispSharpCore.Parsing {
          * 
          * \return list object containing enclosed element
          * 
-         * \exception Exception : closing bracket is missing
+         * \exception ParsingException : closing bracket is missing
          */
         public List<Object?> ParseList() {
             var list = new List<Object?>();
@@ -79,7 +79,7 @@ namespace LispSharpCore.Parsing {
                 this.MoveBy(1);
             }
 
-            throw new Exception("Missing enclosing bracket ')' ");
+            throw new Exceptions.ParsingException("Missing enclosing bracket ')' ");
         }
 
         /**
@@ -88,13 +88,13 @@ namespace LispSharpCore.Parsing {
          * 
          * \return string literal in object form
          * 
-         * \exception Exception : closing quotation mark is missing
+         * \exception ParsingException : closing quotation mark is missing
          */
         public String ParseString() {
             var token = this.GetCurrent();
 
             if (token.Last() != '"') {
-                throw new Exception("Missing enclosing quotation mark '\"' ");
+                throw new Exceptions.ParsingException("Missing enclosing quotation mark '\"' "); 
             }
 
             return token.Substring(1, token.Length - 2);
@@ -151,7 +151,7 @@ namespace LispSharpCore.Parsing {
             }
 
             // unknow token, throw exception
-            throw new Exception(String.Format("Unexpected token: {0}", token));
+            throw new Exceptions.ParsingException(String.Format("Unexpected token: {0}", token));
         }
 
         /**
