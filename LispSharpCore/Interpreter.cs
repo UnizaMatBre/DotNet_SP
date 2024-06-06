@@ -134,17 +134,26 @@ namespace LispSharpCore {
 
             }
 
-            var evalHead = this.EvaluateExpression(head, context);
-
-            if (evalHead is not Types.Function headFunction) {
-                throw new Exceptions.RuntimeException("Call head is not a function");
-            }
-
+            var evaluatedHead = this.EvaluateExpression(head, context);
             var evaluatedArgs = args.Select(argument => this.EvaluateExpression(argument, context)).ToList();
 
-            var appliedContext = headFunction.Apply(evaluatedArgs);
 
-            return this.EvaluateExpression(headFunction.Code, appliedContext);
+            switch (evaluatedHead) {
+                case Types.Function function:
+                    var applyContext = function.Apply(evaluatedArgs);
+
+                    return this.EvaluateExpression(function.Code, applyContext);
+
+
+
+                default:
+                    throw new Exceptions.RuntimeException("Call head is not a callable")
+            }
+
+           
+
+
+            
         }
 
         private object? EvaluateExpression(object? expression, Types.Context context) {
