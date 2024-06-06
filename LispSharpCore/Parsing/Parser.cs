@@ -169,7 +169,7 @@ namespace LispSharpCore.Parsing {
             this._tokens = sourceCode
                 .Replace("(", " ( ")
                 .Replace(")", " ) ")
-                .Split(" ")
+                .Split(new char[]{' ', '\r', '\n', '\t'})
                 .Where(item => item != string.Empty)
                 .ToList();
 
