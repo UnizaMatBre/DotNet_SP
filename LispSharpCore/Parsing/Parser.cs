@@ -29,8 +29,10 @@ namespace LispSharpCore.Parsing {
          *
          * \return token on current position
          */
-        private string GetCurrent() {
-            return this._tokens[this._index];
+        private String Current {
+            get {
+                return this._tokens[this._index];
+            }
         }
 
         /**
@@ -65,7 +67,7 @@ namespace LispSharpCore.Parsing {
             this.MoveBy(1);
 
             while (!this.IsFinished()) {
-                var token = this.GetCurrent();
+                var token = this.Current;
 
                 // we found closing parenthesis, we are finished
                 if (token == ")") { 
@@ -91,7 +93,7 @@ namespace LispSharpCore.Parsing {
          * \exception ParsingException : closing quotation mark is missing
          */
         public String ParseString() {
-            var token = this.GetCurrent();
+            var token = this.Current;
 
             if (token.Last() != '"') {
                 throw new Exceptions.ParsingException("Missing enclosing quotation mark '\"' "); 
@@ -108,7 +110,7 @@ namespace LispSharpCore.Parsing {
          * \exception Exception : unexpected token that doesn't fit any rule was found out
          */
         public object? _ParseElement() {
-            var token = this.GetCurrent();
+            var token = this.Current;
 
             // parsing lists
             if (token == "(") {
