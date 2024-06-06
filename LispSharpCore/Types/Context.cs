@@ -9,7 +9,7 @@
         private Context? _outerContext;
 
         //* dictionary of function's local values
-        private Dictionary<Symbol, object?> _locals;;
+        private Dictionary<Symbol, object?> _locals;
 
         public Context(Context? outerContext = null) {
             this._locals = new Dictionary<Symbol, object?>();
