@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Markup;
 
 namespace LispSharpCore {
 
@@ -144,10 +145,11 @@ namespace LispSharpCore {
 
                     return this.EvaluateExpression(function.Code, applyContext);
 
-
+                case Types.Primitive primitive:
+                    return primitive.Subroutine(this, context, evaluatedArgs);
 
                 default:
-                    throw new Exceptions.RuntimeException("Call head is not a callable")
+                    throw new Exceptions.RuntimeException("Call head is not a callable");
             }
 
            
