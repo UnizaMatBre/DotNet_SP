@@ -158,7 +158,7 @@ namespace LispSharpCore {
             
         }
 
-        private object? EvaluateExpression(object? expression, Types.Context context) {
+        public object? EvaluateExpression(object? expression, Types.Context context) {
             return expression switch {
 
                 // evaluate symbols (to local value)
