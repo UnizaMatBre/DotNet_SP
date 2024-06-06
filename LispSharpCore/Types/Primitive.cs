@@ -13,9 +13,9 @@ namespace LispSharpCore.Types {
      */
     public class Primitive {
         
-        public Func<Interpreter, Types.Context, IList<Object?>> Subroutine { get; init; }
+        public Func<Interpreter, Types.Context, IList<Object?>, Object?> Subroutine { get; init; }
 
-        public Primitive(Func<Interpreter, Types.Context, IList<Object?>> subroutine) { 
+        public Primitive(Func<Interpreter, Types.Context, IList<Object?>, Object?> subroutine) { 
             this.Subroutine = subroutine;
         }
 
