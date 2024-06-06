@@ -147,7 +147,7 @@ namespace LispSharpCore.Types {
             var applyContext = new Context(this.Variables, this.OuterContext);
 
             foreach (var local in Parameters.Zip(arguments)) {
-                applyContext.Add(local.First, local.Second);
+                applyContext.TryPutValue(local.First, local.Second);
             }
 
             return applyContext;
