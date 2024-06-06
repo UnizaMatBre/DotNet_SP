@@ -10,9 +10,9 @@ namespace LispSharpCore {
 
     public class Interpreter {
 
-        private Context _rootContext;
+        private Types.Context _rootContext;
 
-        public Interpreter(Context rootContext) {
+        public Interpreter(Types.Context rootContext) {
             this._rootContext = rootContext;
         }
 
@@ -27,7 +27,7 @@ namespace LispSharpCore {
          * 
          * \exception RuntimeException : variable with specified name was not found
          */
-        private object? EvaluateSymbol(Symbol name, Context context) {
+        private object? EvaluateSymbol(Types.Symbol name, Types.Context context) {
             if (context.TryGetValue(name, out object? result)) {
                 return result;
             }
@@ -45,7 +45,7 @@ namespace LispSharpCore {
          * 
          * \return result of successful function call
          */
-        private object? EvaluateCall(IList<object?> list, Context context) {
+        private object? EvaluateCall(IList<object?> list, Types.Context context) {
             // return empty list as is it
             if (!list.Any()) {
                 return list;
@@ -147,7 +147,7 @@ namespace LispSharpCore {
             return this.EvaluateExpression(headFunction.Code, appliedContext);
         }
 
-        private object? EvaluateExpression(object? expression, Context context) {
+        private object? EvaluateExpression(object? expression, Types.Context context) {
             return expression switch {
 
                 // evaluate symbols (to local value)
