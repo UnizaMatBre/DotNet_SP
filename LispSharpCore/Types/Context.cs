@@ -7,15 +7,17 @@
     public class Context {    
         //* the outer context whose variables will be 
         private Context? _outerContext;
-        
+
         //* dictionary of function's local values
-        private Dictionary<Symbol, object?> _locals = new Dictionary<Symbol, object?>();
+        private Dictionary<Symbol, object?> _locals;;
 
         public Context(Context? outerContext = null) {
+            this._locals = new Dictionary<Symbol, object?>();
+            
             this._outerContext = outerContext;
         }
 
-        public Context(IList<Symbol> localNames, Context? outerContext = null) {
+        public Context(IList<Symbol> localNames, Context? outerContext = null) : this(outerContext) {
             // set outer context
             this._outerContext = outerContext;
 
@@ -23,6 +25,12 @@
             foreach (var name in localNames) {
                 this._locals[name] = null;
             }
+        }
+
+
+        public Context(Dictionary<Symbol, Object?> locals, Context? outerContext) {
+            this._outerContext = outerContext;
+            this._locals = locals;
         }
 
 
