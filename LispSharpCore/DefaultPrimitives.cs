@@ -62,7 +62,7 @@ namespace LispSharpCore {
                         Types.Symbol val => new string(val.Text),
 
                         null => "null",
-                        _ => parameters[0].ToString()
+                        Object value => value.ToString()
                     };
 
                 })
@@ -97,7 +97,7 @@ namespace LispSharpCore {
 
                         null => "null",
 
-                        _ => parameters[0].GetType().Name,
+                        Object value => value.GetType().Name,
                     };
                 })
             );

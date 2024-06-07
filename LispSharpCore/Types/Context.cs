@@ -51,7 +51,7 @@
             try {
                 this._locals.Add(name, value);
             }
-            catch (Exception ex) {
+            catch (ArgumentException) {
                 return false;
             }
 

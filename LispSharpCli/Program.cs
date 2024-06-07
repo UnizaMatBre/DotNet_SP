@@ -28,11 +28,11 @@ namespace LispSharpCli
                         throw new LispSharpCore.Exceptions.RuntimeException("_Print: Argument-parameter count mismatch");
                     }
 
-                    if (parameters[0] == null) {
-                        Console.WriteLine("null");
+                    if (parameters[0] is Object value) {
+                        Console.WriteLine(value.ToString());
                     }
                     else {
-                        Console.WriteLine(parameters[0].ToString());
+                        Console.WriteLine("null");
                     }
 
                     return null;
@@ -71,6 +71,12 @@ namespace LispSharpCli
                     Console.Write("> ");
                     var input = Console.ReadLine();
 
+                    // handling empty input
+                    if (input == null) {
+                        Console.Write(":: ");
+                        continue;
+                    }
+
                     try {
 
                         var expression = parser.Parse(input);
@@ -90,7 +96,7 @@ namespace LispSharpCli
             catch (ValuableHaltException e) {
                 Console.WriteLine("Lisp console exited with value: {0}", e.Value == null ? "null" : e.Value.ToString());
             }
-            catch (HaltException e) {
+            catch (HaltException) {
                 Console.WriteLine("Lisp console exited successfully");
             }
 
