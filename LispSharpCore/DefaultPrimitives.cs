@@ -10,7 +10,103 @@ namespace LispSharpCore {
     public static class DefaultPrimitives {
         public static void initialize(Types.Context context) {
 
-            
+
+
+            // *** TYPE/CASTING PRIMITIVES ***
+
+            context.Add(
+                new Types.Symbol("_ToInteger"),
+                new Types.Primitive((interpreter, context, parameters) => {
+                    if (parameters.Count() != 1) {
+                        throw new LispSharpCore.Exceptions.RuntimeException("Argument-parameter count mismatch");
+                    }
+
+                    return parameters[0] switch {
+                        int val     => val, 
+                        float val   => (int)val, 
+                        string val  => int.Parse(val),
+
+                        _ => new LispSharpCore.Exceptions.RuntimeException("Invalid Integer cast")
+                    };
+
+                })
+            );
+
+            context.Add(
+                new Types.Symbol("_ToFloat"),
+                new Types.Primitive((interpreter, context, parameters) => {
+                    if (parameters.Count() != 1) {
+                        throw new LispSharpCore.Exceptions.RuntimeException("Argument-parameter count mismatch");
+                    }
+
+                    return parameters[0] switch {
+                        int val     => (float)val,
+                        float val   => val,
+                        string val  => float.Parse(val),
+
+                        _ => new LispSharpCore.Exceptions.RuntimeException("Invalid Integer cast")
+                    };
+
+                })
+            );
+
+
+            context.Add(
+                new Types.Symbol("_ToString"),
+                new Types.Primitive((interpreter, context, parameters) => {
+                    if (parameters.Count() != 1) {
+                        throw new LispSharpCore.Exceptions.RuntimeException("Argument-parameter count mismatch");
+                    }
+
+                    return parameters[0] switch {
+                        Types.Symbol val => new string(val.Text),
+
+                        null => "null",
+                        _ => parameters[0].ToString()
+                    };
+
+                })
+            );
+
+
+            context.Add(
+                new Types.Symbol("_ToSymbol"),
+                new Types.Primitive((interpreter, context, parameters) => {
+                    if (parameters.Count() != 1) {
+                        throw new LispSharpCore.Exceptions.RuntimeException("Argument-parameter count mismatch");
+                    }
+
+                    return parameters[0] switch {
+                        String val => new Types.Symbol(val),
+
+                        _ => new LispSharpCore.Exceptions.RuntimeException("Invalid Symbol cast")
+                    };
+
+                })
+            );
+
+
+            context.Add(
+                new Types.Symbol("_GetType"),
+                new Types.Primitive((interpreter, context, parameters) => {
+                    if (parameters.Count() != 1) {
+                        throw new LispSharpCore.Exceptions.RuntimeException("Argument-parameter count mismatch");
+                    }
+
+                    return parameters[0] switch {
+
+                        null => "null",
+
+                        _ => parameters[0].GetType().Name,
+                    };
+                })
+            );
+
+
+
+            // *** ARITHMETIC PRIMITIVES ***
+
+
             Object doArithmeticOperation(Object? left, Object? right, Func<int, int, int> intOp, Func<float, float, float> floatOp) {
                 return (left, right) switch {
                     (int leftInt, int rightInt) => intOp(leftInt, rightInt),
