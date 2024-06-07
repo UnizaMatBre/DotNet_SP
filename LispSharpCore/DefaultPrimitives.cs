@@ -254,6 +254,112 @@ namespace LispSharpCore {
             );
 
 
+            // *** LINQ PRIMITIVES ***
+            
+            context.Add(
+                new Types.Symbol("_Select"),
+                new Types.Primitive((interpreter, context, parameters) => {
+                    if (parameters.Count() != 2) {
+                        throw new LispSharpCore.Exceptions.RuntimeException("_Select: Argument-parameter count mismatch");
+                    }
+
+                    if (parameters[0] is not Types.Function function) {
+                        throw new LispSharpCore.Exceptions.RuntimeException("_Select: Argument[0] is not a function");
+                    }
+
+                    if (function.Arity != 1) {
+                        throw new LispSharpCore.Exceptions.RuntimeException("_Select: Argument[0] argument-parameter count mismatch");
+                    }
+
+                    if (parameters[1] is not IEnumerable<Object?> collection) {
+                        throw new LispSharpCore.Exceptions.RuntimeException("_Select: Arguments[1] is not a collection");
+                    }
+
+                    var arguments = new List<Object?> { null };
+
+                    return collection.Select(item => {
+                        arguments[0] = item;
+
+                        var applyContext = function.Apply(arguments);
+
+                        return interpreter.EvaluateExpression(function.Code, applyContext);
+                    }).ToList();
+                })
+            );
+
+            context.Add(
+                new Types.Symbol("_Where"),
+                new Types.Primitive((interpreter, context, parameters) => {
+                    if (parameters.Count() != 2) {
+                        throw new LispSharpCore.Exceptions.RuntimeException("_Where: Argument-parameter count mismatch");
+                    }
+
+                    if (parameters[0] is not Types.Function function) {
+                        throw new LispSharpCore.Exceptions.RuntimeException("_Where: Argument[0] is not a function");
+                    }
+
+                    if (function.Arity != 1) {
+                        throw new LispSharpCore.Exceptions.RuntimeException("_Where: Argument[0] argument-parameter count mismatch");
+                    }
+
+                    if (parameters[1] is not IEnumerable<Object?> collection) {
+                        throw new LispSharpCore.Exceptions.RuntimeException("_Where: Arguments[1] is not a collection");
+                    }
+
+                    var arguments = new List<Object?> { null };
+
+                    return collection.Where(item => {
+                        arguments[0] = item;
+
+                        var applyContext = function.Apply(arguments);
+
+                        var result = interpreter.EvaluateExpression(function.Code, applyContext);
+
+                        if (result is Boolean boolResult) {
+                            return boolResult;
+                        }
+
+                        throw new LispSharpCore.Exceptions.RuntimeException("_Where: Function result is not boolean");
+                    }).ToList();
+                })
+            );
+
+            context.Add(
+                new Types.Symbol("_Aggregate"),
+                new Types.Primitive((interpreter, context, parameters) => {
+                    if (parameters.Count() != 2) {
+                        throw new LispSharpCore.Exceptions.RuntimeException("_Aggregate: Argument-parameter count mismatch");
+                    }
+
+                    if (parameters[0] is not Types.Function function) {
+                        throw new LispSharpCore.Exceptions.RuntimeException("_Aggregate: Argument[0] is not a function");
+                    }
+
+                    if (function.Arity != 2) {
+                        throw new LispSharpCore.Exceptions.RuntimeException("_Aggregate: Argument[0] argument-parameter count mismatch");
+                    }
+
+                    if (parameters[1] is not IEnumerable<Object?> collection) {
+                        throw new LispSharpCore.Exceptions.RuntimeException("_Aggregate: Arguments[1] is not a collection");
+                    }
+
+                   
+
+                    var arguments = new List<Object?> { null, null };
+
+                    return collection.Aggregate( (accumulator, next) => {
+                        arguments[0] = accumulator;
+                        arguments[1] = next;
+
+                        var applyContext = function.Apply(arguments);
+
+                        return interpreter.EvaluateExpression(function.Code, applyContext);
+
+                       
+                    });
+                })
+            );
+
         }
 
 
