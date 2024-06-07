@@ -97,6 +97,53 @@ namespace LispSharpCore {
             );
 
 
+
+            // Booleans
+            context.Add(
+                new Types.Symbol("_NotBool"),
+                new Types.Primitive((interpreter, context, parameters) => {
+                    if (parameters.Count() != 1) {
+                        throw new LispSharpCore.Exceptions.RuntimeException("Argument-parameter count mismatch");
+                    }
+
+                    return parameters[0] switch {
+                        Boolean boolVal => !boolVal,
+                        _ => throw new LispSharpCore.Exceptions.RuntimeException("Invalid type: boolean type requried")
+                    };
+                })
+            );
+
+
+            context.Add(
+                new Types.Symbol("_AndBool"),
+                new Types.Primitive((interpreter, context, parameters) => {
+                    if (parameters.Count() != 2) {
+                        throw new LispSharpCore.Exceptions.RuntimeException("Argument-parameter count mismatch");
+                    }
+
+                    return (parameters[0], parameters[1]) switch {
+                        (Boolean left, Boolean right) => right && left,
+                        (_, _) => throw new LispSharpCore.Exceptions.RuntimeException("Invalid type: boolean type requried")
+                    };
+                })
+            );
+
+            context.Add(
+                new Types.Symbol("_OrBool"),
+                new Types.Primitive((interpreter, context, parameters) => {
+                    if (parameters.Count() != 2) {
+                        throw new LispSharpCore.Exceptions.RuntimeException("Argument-parameter count mismatch");
+                    }
+
+                    return (parameters[0], parameters[1]) switch {
+                        (Boolean left, Boolean right) => right || left,
+                        (_, _) => throw new LispSharpCore.Exceptions.RuntimeException("Invalid type: boolean type requried")
+                    };
+                })
+            );
+
+
+
         }
 
 
