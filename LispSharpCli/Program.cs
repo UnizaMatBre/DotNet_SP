@@ -12,10 +12,9 @@ namespace LispSharpCli
         public Object? Value { get; set; } = null;
     }
 
-    internal class Program
-    {
-        static void Main(string[] args) {
+    internal class Program {
 
+        static void CliMode() {
 
             // initialize root context
             var rootContext = new LispSharpCore.Types.Context();
@@ -35,7 +34,7 @@ namespace LispSharpCli
                     else {
                         Console.WriteLine(parameters[0].ToString());
                     }
-                    
+
                     return null;
                 })
             );
@@ -60,12 +59,12 @@ namespace LispSharpCli
                        throw new LispSharpCore.Exceptions.RuntimeException("_Exit: Argument-parameter count mismatch");
                    }
 
-                   throw new ValuableHaltException(){ Value = parameters[0] };
+                   throw new ValuableHaltException() { Value = parameters[0] };
                })
-           );
+            );
 
             var interpreter = new LispSharpCore.Interpreter(rootContext);
-            var parser      = new LispSharpCore.Parsing.Parser();
+            var parser = new LispSharpCore.Parsing.Parser();
 
             try {
                 while (true) {
@@ -96,5 +95,11 @@ namespace LispSharpCli
             }
 
         }
+
+        static void Main(string[] args) {
+
+            Program.CliMode();
+
+        } 
     }
 }
