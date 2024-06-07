@@ -236,6 +236,22 @@ namespace LispSharpCore {
                 })
             );
 
+            // *** RELATIONAL PRIMITIVES ***
+
+            context.Add(
+                new Types.Symbol("_Eq"),
+                new Types.Primitive((interpreter, context, parameters) => {
+                    if (parameters.Count() != 2) {
+                        throw new LispSharpCore.Exceptions.RuntimeException("Argument-parameter count mismatch");
+                    }
+
+                    return (parameters[0], parameters[1]) switch {
+                        (null, null) => true,
+                        (null, _) or (_, null) => false,
+                        (Object left, Object right) => left.Equals(right)
+                    };
+                })
+            );
 
 
         }
