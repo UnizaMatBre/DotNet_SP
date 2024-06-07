@@ -125,8 +125,6 @@ namespace LispSharpCore {
             }
 
             
-
-            // arithmetics
             context.Add(
                 new Types.Symbol("_AddNumbers"),
                 new Types.Primitive((interpreter, context, parameters) => {
@@ -193,8 +191,8 @@ namespace LispSharpCore {
             );
 
 
-
-            // Booleans
+            // *** BOOLEANS PRIMITIVES ***
+            
             context.Add(
                 new Types.Symbol("_NotBool"),
                 new Types.Primitive((interpreter, context, parameters) => {
