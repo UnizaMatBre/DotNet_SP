@@ -87,23 +87,41 @@ namespace LispSharpCore {
 
                         
                     // stores value into specified variable
-                    case "set":
-                        if (args.Count() != 2) {
-                            throw new Exceptions.RuntimeException("Special form #set: wrong argument count");
+                    case "set": {
+                            if (args.Count() != 2) {
+                                throw new Exceptions.RuntimeException("Special form #set: wrong argument count");
+                            }
+
+                            if (args[0] is not Types.Symbol varName) {
+                                throw new Exceptions.RuntimeException("Special form #set: variable name must be a symbol");
+                            }
+
+                            var storedVal = this.EvaluateExpression(args[1], context);
+
+                            if (!context.TryPutValue(varName, storedVal)) {
+                                throw new Exceptions.RuntimeException(String.Format("Special form #set: variable nammed #{0} was not found", varName.Text));
+                            }
+
+                            return storedVal;
                         }
+                    // adds new variable to current context
+                    case "add": {
+                            if (args.Count() != 2) {
+                                throw new Exceptions.RuntimeException("Special form #add: wrong argument count");
+                            }
 
-                        if (args[0] is not Types.Symbol varName) {
-                            throw new Exceptions.RuntimeException("Special form #set: variable name must be a symbol");
+                            if (args[0] is not Types.Symbol varName) {
+                                throw new Exceptions.RuntimeException("Special form #add: variable name must be a symbol");
+                            }
+
+                            var storedVal = this.EvaluateExpression(args[1], context);
+
+                            if (!context.Add(varName, storedVal)) {
+                                throw new Exceptions.RuntimeException(String.Format("Special form #add: variable nammed #{0} already exists", varName.Text));
+                            }
+
+                            return storedVal;
                         }
-
-                        var storedVal = this.EvaluateExpression(args[1], context);
-
-                        if (!context.TryPutValue(varName, storedVal)) {
-                            throw new Exceptions.RuntimeException(String.Format("Special form #set: variable nammed #{0} was not found", varName.Text));
-                        }
-
-                        return storedVal;
-
 
                     // creates new function and returns it
                     case "function":

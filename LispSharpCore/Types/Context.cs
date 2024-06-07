@@ -47,8 +47,15 @@
             }
         }
 
-        public void Add(Symbol name, object? value) {
-            this._locals.Add(name, value);
+        public bool Add(Symbol name, object? value) {
+            try {
+                this._locals.Add(name, value);
+            }
+            catch (Exception ex) {
+                return false;
+            }
+
+            return true;
         }
 
         /**
