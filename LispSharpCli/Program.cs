@@ -1,34 +1,100 @@
 ﻿using LispSharpCore;
-using LispSharpCore.Parsing;
 using System;
 using System.ComponentModel.DataAnnotations;
 
+
 namespace LispSharpCli
 {
+
+    internal class HaltException : Exception { }
+
+    internal class ValuableHaltException : Exception {
+        public Object? Value { get; set; } = null;
+    }
+
     internal class Program
     {
         static void Main(string[] args) {
 
 
-
+            // initialize root context
             var rootContext = new LispSharpCore.Types.Context();
+            LispSharpCore.DefaultPrimitives.initialize(rootContext);
 
-            DefaultPrimitives.initialize(rootContext);
+            // ** PRINT PRIMITIVE **
+            rootContext.Add(
+                new LispSharpCore.Types.Symbol("_Print"),
+                new LispSharpCore.Types.Primitive((interpreter, context, parameters) => {
+                    if (parameters.Count() != 1) {
+                        throw new LispSharpCore.Exceptions.RuntimeException("_Print: Argument-parameter count mismatch");
+                    }
 
-            rootContext.Add(new LispSharpCore.Types.Symbol("input_collection"), new List<Object?>() { 1, 1, 1, 1, 1 });
+                    if (parameters[0] == null) {
+                        Console.WriteLine("null");
+                    }
+                    else {
+                        Console.WriteLine(parameters[0].ToString());
+                    }
+                    
+                    return null;
+                })
+            );
 
-            var sourceCode = @"
-                ( _Aggregate 
-                    ( function (acc next) () ( _AddNumbers acc next ) ) 
-                    input_collection 
-                )";
+            // ** EXIT PRIMITIVE **
+            rootContext.Add(
+                new LispSharpCore.Types.Symbol("_Exit"),
+                new LispSharpCore.Types.Primitive((interpreter, context, parameters) => {
+                    if (parameters.Count() != 0) {
+                        throw new LispSharpCore.Exceptions.RuntimeException("_Exit: Argument-parameter count mismatch");
+                    }
 
-            var parsed = new Parser().Parse(sourceCode);
+                    throw new HaltException();
+                })
+            );
 
-            var result = new Interpreter(rootContext).Start(parsed);
+            // ** EXIT WITH PRIMITIVE **
+            rootContext.Add(
+               new LispSharpCore.Types.Symbol("_ExitWith"),
+               new LispSharpCore.Types.Primitive((interpreter, context, parameters) => {
+                   if (parameters.Count() != 1) {
+                       throw new LispSharpCore.Exceptions.RuntimeException("_Exit: Argument-parameter count mismatch");
+                   }
 
+                   throw new ValuableHaltException(){ Value = parameters[0] };
+               })
+           );
 
-            Console.WriteLine("Hello, World!");
+            var interpreter = new LispSharpCore.Interpreter(rootContext);
+            var parser      = new LispSharpCore.Parsing.Parser();
+
+            try {
+                while (true) {
+                    Console.Write("> ");
+                    var input = Console.ReadLine();
+
+                    try {
+
+                        var expression = parser.Parse(input);
+                        var result = interpreter.Start(expression);
+
+                        Console.Write(":: ");
+                        Console.WriteLine(result == null ? "null" : result.ToString());
+                    }
+                    catch (LispSharpCore.Exceptions.ParsingException e) {
+                        Console.WriteLine(e.Message);
+                    }
+                    catch (LispSharpCore.Exceptions.RuntimeException e) {
+                        Console.WriteLine(e.Message);
+                    }
+                }
+            }
+            catch (ValuableHaltException e) {
+                Console.WriteLine("Lisp console exited with value: {0}", e.Value == null ? "null" : e.Value.ToString());
+            }
+            catch (HaltException e) {
+                Console.WriteLine("Lisp console exited successfully");
+            }
+
         }
     }
 }
